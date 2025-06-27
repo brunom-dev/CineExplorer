@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../../assets/LOGO-CINE-EXPLORER.png";
+import Logo from "../../assets/logo-cineexplorer-desktop.png";
 import { Link } from "react-router-dom";
 import { SearchIcon, MenuIcon, XIcon } from "lucide-react";
 
