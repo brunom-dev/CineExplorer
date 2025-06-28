@@ -139,7 +139,7 @@ export function Home() {
                 </div>
             </section>
 
-            <section className="container mx-auto p-6 bg-slate-900">
+            <section className="container mx-auto p-6 bg-slate-900 pb-15">
                 <h2 className="text-3xl md:text-4xl text-slate-100 font-bold mb-10 mt-5">
                     Séries Populares
                 </h2>
