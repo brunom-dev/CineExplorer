@@ -26,11 +26,11 @@ export const ModalTrailer = ({ isOpen, onClose, videoKey }: ModalProps) => {
 
     return (
         <div
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 px-5 md:px-auto"
             onClick={onClose}
         >
             <div
-                className="bg-slate-900 p-4 rounded-lg relative w-full max-w-4xl"
+                className="bg-slate-900 p-2 rounded-lg shadow-xl relative w-full max-w-4xl"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button
