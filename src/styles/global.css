@@ -5,4 +5,8 @@
     font-family: 'Inter', sans-serif;
 }
 
+body {
+    background-color: #020618;
+}
+
 @import 'tailwindcss';
