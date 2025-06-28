@@ -8,7 +8,7 @@ export const Header = () => {
 
     return (
         <>
-            <header className="w-full bg-slate-900 shadow-lg z-50 mb-5">
+            <header className="w-full bg-slate-900 shadow-lg z-50">
                 <nav className="container mx-auto py-5 px-6 flex items-center justify-between">
                     <Link to="/">
                         <img
