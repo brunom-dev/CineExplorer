@@ -1,14 +1,9 @@
-import type { MovieCardProps } from "../../types/MovieCardProps";
+import type { MediaItem } from "../../types/MediaItem";
 
-export const MovieCard = ({
-    poster_path,
-    title,
-    name,
-    vote_average,
-}: MovieCardProps) => {
-    const imageUrl = `https://image.tmdb.org/t/p/w500${poster_path}`;
-    const displayName = title || name;
-    const formattedVote = vote_average.toFixed(1);
+export const MovieCard = (item: MediaItem) => {
+    const imageUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+    const displayName = item.title || item.name || "Titulo Indisponível";
+    const formattedVote = item.vote_average.toFixed(1);
 
     return (
         <div className="relative group rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer">
