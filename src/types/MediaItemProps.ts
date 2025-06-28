@@ -1,4 +1,4 @@
-export type MediaItem = {
+export type MediaItemProps = {
     id: number;
     adult: boolean;
     backdrop_path: string;

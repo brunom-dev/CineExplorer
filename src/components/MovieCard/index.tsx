@@ -1,6 +1,6 @@
-import type { MediaItem } from "../../types/MediaItem";
+import type { MediaItemProps } from "../../types/MediaItemProps";
 
-export const MovieCard = (item: MediaItem) => {
+export const MovieCard = (item: MediaItemProps) => {
     const imageUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
     const displayName = item.title || item.name || "Titulo Indisponível";
     const formattedVote = item.vote_average.toFixed(1);
