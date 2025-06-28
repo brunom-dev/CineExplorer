@@ -31,16 +31,12 @@ export function Home() {
 
                 setMovies(moviesResponse);
                 setSeries(seriesResponse);
-            } 
-            
-            catch (error) {
+            } catch (error) {
                 console.error(
                     "Erro ao buscar dados para a página inicial:",
                     error
                 );
-            }
-
-            finally {
+            } finally {
                 setIsLoading(false);
             }
         };
@@ -90,7 +86,6 @@ export function Home() {
         }
     }, [heroMovie]);
 
-
     if (isLoading) {
         return (
             <div className="bg-slate-950 flex items-center justify-center min-h-screen">
@@ -133,8 +128,8 @@ export function Home() {
                 </section>
             )}
 
-            <main className="container mx-auto p-6 bg-gradient-to-b from-slate-950 to-slate-900">
-                <h2 className="text-3xl text-slate-100 font-bold mb-10">
+            <section className="container mx-auto p-6 bg-gradient-to-b from-slate-950 to-slate-900">
+                <h2 className="text-3xl md:text-4xl text-slate-100 font-bold mb-10">
                     Filmes em Alta
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -142,7 +137,19 @@ export function Home() {
                         <MovieCard key={movie.id} {...movie} />
                     ))}
                 </div>
-            </main>
+            </section>
+
+            <section className="container mx-auto p-6 bg-slate-900">
+                <h2 className="text-3xl md:text-4xl text-slate-100 font-bold mb-10 mt-5">
+                    Séries Populares
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    
+                    {series.map((series) => (
+                        <MovieCard key={series.id} {...series} />
+                    ))}
+                </div>
+            </section>
 
             <ModalTrailer
                 isOpen={isModalOpen}
