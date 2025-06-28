@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
 import { Link } from "react-router-dom";
 import { SearchIcon, MenuIcon, XIcon } from "lucide-react";
 
 export const Header = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     return (
         <>
-            <header className="w-full bg-slate-900 shadow-lg z-50 mb-5">
+            <header className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ease-in-out ${isScrolled ? 'bg-slate-900 shadow-lg' : 'bg-transparent'}`}>
                 <nav className="container mx-auto py-5 px-6 flex items-center justify-between">
                     <Link to="/">
                         <img
