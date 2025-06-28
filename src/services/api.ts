@@ -1,9 +1,10 @@
 import axios from 'axios';
+import type { MediaItem } from '../types/MediaItem';
 
 const apiKey = import.meta.env.VITE_TMDB_API;
 
 
-const api = axios.create({
+export const api = axios.create({
     baseURL: 'https://api.themoviedb.org/3',
     params: {
         api_key: apiKey,
@@ -12,7 +13,7 @@ const api = axios.create({
 })
 
 
-export const getTrendingMovies = async () => {
+export const getTrendingMovies = async ():Promise<MediaItem[]> => {
     try {
         const response = await api.get('/trending/movie/week');
 
@@ -25,4 +26,16 @@ export const getTrendingMovies = async () => {
     }
 }
 
-export { api }
+
+export const getPopularSeries = async ():Promise<MediaItem[]> => {
+    try {
+        const response = await api.get('/tv/popular');
+
+        return response.data.results;
+    }   
+
+    catch (error) {
+        console.error("Erro ao buscar as medias populares: ", error);
+        return [];
+    }
+}
