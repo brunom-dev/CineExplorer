@@ -2,7 +2,7 @@ import { api } from "./api";
 
 import type { MediaItemProps } from "../types/MediaItemProps";
 import type { MovieDetailsProps } from "../types/MediaDetailsProps";
-import type {  Credits } from "../types/MediaDetailsProps"
+import type { Credits } from "../types/MediaDetailsProps";
 import type { VideoProps } from "../types/VideoProps";
 
 export const getTrendingMovies = async (): Promise<MediaItemProps[]> => {
@@ -82,7 +82,24 @@ export const getMovieCredits = async (
         const response = await api.get(`/movie/${movieId}/credits`);
         return response.data;
     } catch (error) {
-        console.error(`Erro ao buscar os creditos dos filme ${movieId}: ${error}`);
+        console.error(
+            `Erro ao buscar os creditos dos filme ${movieId}: ${error}`
+        );
         return null;
+    }
+};
+
+export const getMovieRecommendations = async (
+    movieId: number
+): Promise<MediaItemProps[]> => {
+    try {
+        const response = await api.get(`/movie/${movieId}/recommendations`);
+        return response.data.results.slice(0, 10);
+    } catch (error) {
+        console.error(
+            `Erro ao buscar recomendações para o filme ${movieId}:`,
+            error
+        );
+        return [];
     }
 };
