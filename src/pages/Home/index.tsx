@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import type { MediaItemProps } from "../../types/MediaItemProps";
-import type { VideoProps } from "../../types/VideoProps";
 
 import {
     getTrendingMovies,
     getPopularSeries,
     getMovieTrailer,
-} from "../../services/api";
+    findBestTrailer,
+} from "../../services/utils";
 
 import { PlayCircleIcon } from "lucide-react";
-import { MovieCard } from "../../components/MovieCard";
+import { MediaCard } from "../../components/MediaCard";
 import { ModalTrailer } from "../../components/ModalTrailer";
 import { Spinner } from "../../components/Spinner";
 
@@ -46,32 +46,6 @@ export function Home() {
 
     const heroMovie: MediaItemProps | null =
         movies.length > 0 ? movies[0] : null;
-
-    function findBestTrailer(videos: VideoProps[]): VideoProps | null {
-        const youtubeTrailers = videos.filter(
-            (video) => video.site === "YouTube" && video.type === "Trailer"
-        );
-
-        const dubbedTrailer = youtubeTrailers.find(
-            (video) =>
-                video.official && video.name.toLowerCase().includes("dublado")
-        );
-
-        if (dubbedTrailer) return dubbedTrailer;
-
-        const officialPtTrailer = youtubeTrailers.find(
-            (video) => video.official && video.iso_639_1 === "pt"
-        );
-
-        if (officialPtTrailer) return officialPtTrailer;
-
-        const anyOfficialTrailer = youtubeTrailers.find(
-            (video) => video.official
-        );
-
-        if (anyOfficialTrailer) return anyOfficialTrailer;
-        return youtubeTrailers.length > 0 ? youtubeTrailers[0] : null;
-    }
 
     useEffect(() => {
         if (heroMovie) {
@@ -134,7 +108,7 @@ export function Home() {
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     {movies.map((movie) => (
-                        <MovieCard key={movie.id} {...movie} />
+                        <MediaCard key={movie.id} {...movie} />
                     ))}
                 </div>
             </section>
@@ -146,7 +120,7 @@ export function Home() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     
                     {series.map((series) => (
-                        <MovieCard key={series.id} {...series} />
+                        <MediaCard key={series.id} {...series} />
                     ))}
                 </div>
             </section>
