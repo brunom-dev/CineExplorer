@@ -1,0 +1,196 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import type { MediaItemProps } from "../../types/MediaItemProps";
+import type {
+    MovieDetailsProps,
+    Genre,
+    Credits,
+} from "../../types/MediaDetailsProps";
+
+import { MediaCard } from '../../components/MediaCard/index';
+import { ModalTrailer } from "../../components/ModalTrailer";
+import { Spinner } from "../../components/Spinner";
+import { CastCard } from "../../components/CastCard";
+
+import {
+    getMediaDetails,
+    getMovieTrailer,
+    findBestTrailer,
+    getMovieCredits,
+    getMovieRecommendations,
+} from "../../services/utils";
+
+export const MediaDetails = () => {
+    const { id } = useParams();
+
+    const [details, setDetails] = useState<MovieDetailsProps | null>(null);
+    const [credits, setCredits] = useState<Credits | null>(null);
+    const [recommendations, setRecommendations] = useState<MediaItemProps[]>(
+        []
+    );
+    const [trailerKey, setTrailerKey] = useState<string | null>(null);
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchDetails = async () => {
+            if (id) {
+                const movieId = parseInt(id, 10);
+                setDetails(null);
+                setTrailerKey(null);
+                setCredits(null);
+                setIsLoading(true)
+
+                const [
+                    detailsResponse,
+                    videosResponse,
+                    creditsResponse,
+                    recommendationsResponse,
+                ] = await Promise.all([
+                    getMediaDetails(movieId),
+                    getMovieTrailer(movieId),
+                    getMovieCredits(movieId),
+                    getMovieRecommendations(movieId),
+                ]);
+
+                setDetails(detailsResponse);
+                setCredits(creditsResponse);
+                setRecommendations(recommendationsResponse);
+
+                const bestTrailer = findBestTrailer(videosResponse);
+                if (bestTrailer) {
+                    setTrailerKey(bestTrailer.key);
+                }
+
+                setIsLoading(false);
+            }
+        };
+
+        fetchDetails();
+    }, [id]);
+
+    if (!details) {
+        return (
+            <div className="min-h-screen flex justify-center items-center text-white text-3xl">
+                {isLoading ? <Spinner /> : "Filme ou Serie não encontrado."}
+            </div>
+        );
+    }
+
+    const backdropUrl = `https://image.tmdb.org/t/p/original${details.backdrop_path}`;
+    const posterUrl = `https://image.tmdb.org/t/p/w500${details.poster_path}`;
+    const year = details.release_date
+        ? new Date(details.release_date).getFullYear()
+        : "N/A";
+    const runtimeHours = Math.floor(details.runtime / 60);
+    const runtimeMinutes = details.runtime % 60;
+    const formattedRuntime = `${runtimeHours}h ${runtimeMinutes}m`;
+
+    return (
+        <div className="min-h-[90vh] text-white">
+            <section className="relative w-full pt-20">
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-40"
+                    style={{ backgroundImage: `url(${backdropUrl})` }}
+                ></div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/50"></div>
+
+                <div className="container mx-auto px-10 py-24 relative z-10 flex flex-col md:flex-row items-center gap-10">
+                    <figure className="w-full md:w-1/4 flex-shrink-0">
+                        <img
+                            src={posterUrl}
+                            alt={`Pôster de ${details.title}`}
+                            className="rounded-xl shadow-2xl w-full"
+                        />
+                    </figure>
+
+                    <div className="w-full md:w-2/3 text-center md:text-left text-slate-100">
+                        <h1 className="text-4xl lg:text-5xl font-bold">
+                            {details.title} ({year})
+                        </h1>
+
+                        {details.tagline && (
+                            <p className="text-slate-300 italic mt-2 text-lg">
+                                "{details.tagline}"
+                            </p>
+                        )}
+
+                        <div className="flex items-center justify-center md:justify-start gap-4 mt-4 text-sm text-slate-300">
+                            <span>{formattedRuntime}</span>
+                            <span>•</span>
+                            <div className="flex gap-2">
+                                {details.genres.map((genre: Genre) => (
+                                    <span
+                                        key={genre.id}
+                                        className="bg-slate-700 px-3 py-1 rounded-full"
+                                    >
+                                        {genre.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mt-6">
+                            <h3 className="text-xl font-bold text-sky-500">
+                                Sinopse
+                            </h3>
+                            <p className="text-slate-200 mt-2">
+                                {details.overview}
+                            </p>
+                        </div>
+
+                        <div className="mt-8">
+                            <button
+                                className="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg disabled:bg-slate-700 disabled:cursor-not-allowed cursor-pointer"
+                                onClick={() => setIsModalOpen(true)}
+                                disabled={!trailerKey}
+                            >
+                                ▶{" "}
+                                {trailerKey
+                                    ? "Assistir Trailer"
+                                    : "Trailer Indisponível"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {credits && credits.cast.length > 0 && (
+                <section className="mt-5 mb-10 px-10">
+                    <h2 className="text-2xl md:text-3xl text-slate-100 font-bold mb-3">
+                        Elenco Principal
+                    </h2>
+
+                    <div className="flex overflow-x-auto gap-4 py-4">
+                        {credits.cast.slice(0, 15).map((member) => (
+                            <CastCard key={member.id} member={member} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {recommendations && recommendations.length > 0 && (
+                <section className="mt-16 px-10">
+                    <h2 className="text-2xl md:text-3xl text-slate-100 font-bold mb-6">
+                        Você também pode gostar
+                    </h2>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-16">
+                        {recommendations.map((movie) => (
+                            <MediaCard key={movie.id} {...movie} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            <ModalTrailer
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                videoKey={trailerKey}
+            />
+        </div>
+    );
+};
