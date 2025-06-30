@@ -1,7 +1,7 @@
 import { api } from "./api";
 
 import type { MediaItemProps } from "../types/MediaItemProps";
-import type { MovieDetailsProps } from "../types/MediaDetailsProps";
+import type { MediaDetailsProps } from "../types/MediaDetailsProps";
 import type { Credits } from "../types/MediaDetailsProps";
 import type { VideoProps } from "../types/VideoProps";
 
@@ -27,11 +27,12 @@ export const getPopularSeries = async (): Promise<MediaItemProps[]> => {
     }
 };
 
-export const getMovieTrailer = async (
-    movieId: number
+export const getMediaTrailer = async (
+    movieId: number,
+    mediaType: string
 ): Promise<VideoProps[]> => {
     try {
-        const response = await api.get(`/movie/${movieId}/videos`);
+        const response = await api.get(`/${mediaType}/${movieId}/videos`);
         return response.data.results;
     } catch (error) {
         console.error(`Erro ao buscar vídeos para o filme ${movieId}:`, error);
@@ -39,35 +40,61 @@ export const getMovieTrailer = async (
     }
 };
 
-export function findBestTrailer(videos: VideoProps[]): VideoProps | null {
+export function findBestTrailer(
+    videos: VideoProps[],
+    mediaType: "movie" | "tv"
+): VideoProps | null {
     const youtubeTrailers = videos.filter(
-        (video) => video.site === "YouTube" && video.type === "Trailer"
+        (v) => v.site === "YouTube" && v.type === "Trailer"
     );
+
+    if (mediaType === "tv") {
+        const seasonOneRegex = /temporada 1|season 1|1ª/i;
+
+        const spoilerSeasonRegex = /temporada [2-9]|season [2-9]|[2-9]ª/i;
+
+        const dubbedSeasonOne = youtubeTrailers.find(
+            (v) =>
+                v.official &&
+                v.name.toLowerCase().includes("dublado") &&
+                seasonOneRegex.test(v.name)
+        );
+        if (dubbedSeasonOne) return dubbedSeasonOne;
+
+        const officialSeasonOne = youtubeTrailers.find(
+            (v) => v.official && seasonOneRegex.test(v.name)
+        );
+        if (officialSeasonOne) return officialSeasonOne;
+
+        const genericOfficialTrailer = youtubeTrailers.find(
+            (v) => v.official && !spoilerSeasonRegex.test(v.name.toLowerCase())
+        );
+
+        if (genericOfficialTrailer) return genericOfficialTrailer;
+    }
 
     const dubbedTrailer = youtubeTrailers.find(
-        (video) =>
-            video.official && video.name.toLowerCase().includes("dublado")
+        (v) => v.official && v.name.toLowerCase().includes("dublado")
     );
-
     if (dubbedTrailer) return dubbedTrailer;
 
     const officialPtTrailer = youtubeTrailers.find(
-        (video) => video.official && video.iso_639_1 === "pt"
+        (v) => v.official && v.iso_639_1 === "pt"
     );
-
     if (officialPtTrailer) return officialPtTrailer;
 
-    const anyOfficialTrailer = youtubeTrailers.find((video) => video.official);
-
+    const anyOfficialTrailer = youtubeTrailers.find((v) => v.official);
     if (anyOfficialTrailer) return anyOfficialTrailer;
+
     return youtubeTrailers.length > 0 ? youtubeTrailers[0] : null;
 }
 
 export const getMediaDetails = async (
-    mediaId: number
-): Promise<MovieDetailsProps | null> => {
+    mediaId: number,
+    mediatype: string
+): Promise<MediaDetailsProps | null> => {
     try {
-        const response = await api.get(`/movie/${mediaId}`);
+        const response = await api.get(`/${mediatype}/${mediaId}`);
         return response.data;
     } catch (error) {
         console.error(`Erro ao busca detalhes da midia ${mediaId}: ${error}`);
@@ -75,11 +102,12 @@ export const getMediaDetails = async (
     }
 };
 
-export const getMovieCredits = async (
-    movieId: number
+export const getMediaCredits = async (
+    movieId: number,
+    mediaType: string
 ): Promise<Credits | null> => {
     try {
-        const response = await api.get(`/movie/${movieId}/credits`);
+        const response = await api.get(`/${mediaType}/${movieId}/credits`);
         return response.data;
     } catch (error) {
         console.error(
@@ -89,11 +117,14 @@ export const getMovieCredits = async (
     }
 };
 
-export const getMovieRecommendations = async (
-    movieId: number
+export const getMediaRecommendations = async (
+    movieId: number,
+    mediaType: string
 ): Promise<MediaItemProps[]> => {
     try {
-        const response = await api.get(`/movie/${movieId}/recommendations`);
+        const response = await api.get(
+            `/${mediaType}/${movieId}/recommendations`
+        );
         return response.data.results.slice(0, 10);
     } catch (error) {
         console.error(

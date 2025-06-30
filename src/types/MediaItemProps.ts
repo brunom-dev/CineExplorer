@@ -9,4 +9,5 @@ export type MediaItemProps = {
     vote_average: number;
     release_date?: string; // (para filmes)
     first_air_date?: string; // (para séries)
+    type: string;
 };

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import type { MediaItemProps } from "../../types/MediaItemProps";
 import type {
-    MovieDetailsProps,
+    MediaDetailsProps,
     Genre,
     Credits,
 } from "../../types/MediaDetailsProps";
@@ -15,16 +15,19 @@ import { CastCard } from "../../components/CastCard";
 
 import {
     getMediaDetails,
-    getMovieTrailer,
+    getMediaTrailer,
     findBestTrailer,
-    getMovieCredits,
-    getMovieRecommendations,
+    getMediaCredits,
+    getMediaRecommendations,
 } from "../../services/utils";
 
 export const MediaDetails = () => {
+    const location = useLocation();
     const { id } = useParams();
 
-    const [details, setDetails] = useState<MovieDetailsProps | null>(null);
+    const mediaType = location.pathname.startsWith("/movie") ? "movie" : "tv";
+
+    const [details, setDetails] = useState<MediaDetailsProps | null>(null);
     const [credits, setCredits] = useState<Credits | null>(null);
     const [recommendations, setRecommendations] = useState<MediaItemProps[]>(
         []
@@ -49,17 +52,17 @@ export const MediaDetails = () => {
                     creditsResponse,
                     recommendationsResponse,
                 ] = await Promise.all([
-                    getMediaDetails(movieId),
-                    getMovieTrailer(movieId),
-                    getMovieCredits(movieId),
-                    getMovieRecommendations(movieId),
+                    getMediaDetails(movieId, mediaType),
+                    getMediaTrailer(movieId, mediaType),
+                    getMediaCredits(movieId, mediaType),
+                    getMediaRecommendations(movieId, mediaType),
                 ]);
 
                 setDetails(detailsResponse);
                 setCredits(creditsResponse);
                 setRecommendations(recommendationsResponse);
 
-                const bestTrailer = findBestTrailer(videosResponse);
+                const bestTrailer = findBestTrailer(videosResponse, mediaType);
                 if (bestTrailer) {
                     setTrailerKey(bestTrailer.key);
                 }
@@ -109,7 +112,7 @@ export const MediaDetails = () => {
 
                     <div className="w-full md:w-2/3 text-center md:text-left text-slate-100">
                         <h1 className="text-4xl lg:text-5xl font-bold">
-                            {details.title} ({year})
+                            {mediaType === "movie" ? details.title : details.name} ({year})
                         </h1>
 
                         {details.tagline && (
@@ -180,7 +183,7 @@ export const MediaDetails = () => {
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-16">
                         {recommendations.map((movie) => (
-                            <MediaCard key={movie.id} {...movie} />
+                            <MediaCard key={movie.id} {...movie} type={mediaType}/>
                         ))}
                     </div>
                 </section>

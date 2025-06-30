@@ -16,6 +16,10 @@ export const router = createBrowserRouter([
             {
                 path: "/movie/:id",
                 element: <MediaDetails />
+            },
+            {
+                path: "/tv/:id",
+                element: <MediaDetails />
             }
 
         ],

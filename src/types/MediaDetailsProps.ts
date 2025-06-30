@@ -15,9 +15,10 @@ export type Credits = {
     cast: CastMember[];
 };
 
-export type MovieDetailsProps = {
+export type MediaDetailsProps = {
     id: number;
-    title: string;
+    title?: string;
+    name?: string;
     overview: string;
     poster_path: string;
     backdrop_path: string;

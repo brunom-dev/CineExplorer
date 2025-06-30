@@ -9,7 +9,7 @@ export const MediaCard = (item: MediaItemProps) => {
     const formattedVote = item.vote_average.toFixed(1);
 
     return (
-        <Link to={`/movie/${item.id}`}>
+        <Link to={`/${item.type}/${item.id}`}>
             <div className="relative group rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer">
                 <img
                     src={imageUrl}

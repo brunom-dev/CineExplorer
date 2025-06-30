@@ -4,7 +4,7 @@ import type { MediaItemProps } from "../../types/MediaItemProps";
 import {
     getTrendingMovies,
     getPopularSeries,
-    getMovieTrailer,
+    getMediaTrailer,
     findBestTrailer,
 } from "../../services/utils";
 
@@ -50,8 +50,8 @@ export function Home() {
     useEffect(() => {
         if (heroMovie) {
             const fetchTrailer = async () => {
-                const videos = await getMovieTrailer(heroMovie.id);
-                const bestTrailer = findBestTrailer(videos);
+                const videos = await getMediaTrailer(heroMovie.id, "movie");
+                const bestTrailer = findBestTrailer(videos, "movie");
                 if (bestTrailer) {
                     setTrailerKey(bestTrailer.key);
                 }
@@ -108,7 +108,7 @@ export function Home() {
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     {movies.map((movie) => (
-                        <MediaCard key={movie.id} {...movie} />
+                        <MediaCard key={movie.id} {...movie} type={"movie"} />
                     ))}
                 </div>
             </section>
@@ -120,7 +120,7 @@ export function Home() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     
                     {series.map((series) => (
-                        <MediaCard key={series.id} {...series} />
+                        <MediaCard key={series.id} {...series} type={"tv"} />
                     ))}
                 </div>
             </section>
