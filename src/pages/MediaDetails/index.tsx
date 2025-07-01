@@ -72,7 +72,7 @@ export const MediaDetails = () => {
         };
 
         fetchDetails();
-    }, [id]);
+    }, [id, mediaType]);
 
     if (!details) {
         return (
