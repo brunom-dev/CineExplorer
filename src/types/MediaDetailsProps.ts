@@ -22,8 +22,10 @@ export type MediaDetailsProps = {
     overview: string;
     poster_path: string;
     backdrop_path: string;
-    release_date: string;
-    runtime: number;
+    release_date?: string; // filmes
+    first_air_date?: string; // series
+    runtime: number; // filmes
+    number_of_seasons?: number; // series
     genres: Genre[];
     vote_average: number;
     tagline: string;

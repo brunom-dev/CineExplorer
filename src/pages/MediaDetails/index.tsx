@@ -8,7 +8,7 @@ import type {
     Credits,
 } from "../../types/MediaDetailsProps";
 
-import { MediaCard } from '../../components/MediaCard/index';
+import { MediaCard } from "../../components/MediaCard/index";
 import { ModalTrailer } from "../../components/ModalTrailer";
 import { Spinner } from "../../components/Spinner";
 import { CastCard } from "../../components/CastCard";
@@ -44,7 +44,7 @@ export const MediaDetails = () => {
                 setDetails(null);
                 setTrailerKey(null);
                 setCredits(null);
-                setIsLoading(true)
+                setIsLoading(true);
 
                 const [
                     detailsResponse,
@@ -84,12 +84,19 @@ export const MediaDetails = () => {
 
     const backdropUrl = `https://image.tmdb.org/t/p/original${details.backdrop_path}`;
     const posterUrl = `https://image.tmdb.org/t/p/w500${details.poster_path}`;
-    const year = details.release_date
-        ? new Date(details.release_date).getFullYear()
-        : "N/A";
-    const runtimeHours = Math.floor(details.runtime / 60);
-    const runtimeMinutes = details.runtime % 60;
-    const formattedRuntime = `${runtimeHours}h ${runtimeMinutes}m`;
+
+    const releaseDate =
+        "release_date" in details
+            ? details.release_date
+            : details.first_air_date;
+    console.log(details);
+
+    const year = releaseDate ? new Date(releaseDate).getFullYear() : "N/A";
+
+    const formattedRuntime =
+        "runtime" in details && details.runtime > 0
+            ? `${Math.floor(details.runtime / 60)}h ${details.runtime % 60}m`
+            : null;
 
     return (
         <div className="min-h-[90vh] text-white">
@@ -112,7 +119,10 @@ export const MediaDetails = () => {
 
                     <div className="w-full md:w-2/3 text-center md:text-left text-slate-100">
                         <h1 className="text-4xl lg:text-5xl font-bold">
-                            {mediaType === "movie" ? details.title : details.name} ({year})
+                            {mediaType === "movie"
+                                ? details.title
+                                : details.name}{" "}
+                            ({year})
                         </h1>
 
                         {details.tagline && (
@@ -121,10 +131,24 @@ export const MediaDetails = () => {
                             </p>
                         )}
 
-                        <div className="flex items-center justify-center md:justify-start gap-4 mt-4 text-sm text-slate-300">
-                            <span>{formattedRuntime}</span>
-                            <span>•</span>
-                            <div className="flex gap-2">
+                        <div className="flex items-center justify-center md:justify-start flex-wrap gap-x-4 gap-y-2 mt-4 text-sm text-slate-300">
+
+                            {"runtime" in details && details.runtime > 0 && (
+                                <>
+                                    <span>{formattedRuntime}</span>
+                                </>
+                            )}
+
+                            {"number_of_seasons" in details && (
+                                <>
+                                    <span>
+                                        {details.number_of_seasons} Temporada(s)
+                                    </span>
+                                </>
+                            )}
+
+                            {details.genres.length > 0 && <span>•</span>}
+                            <div className="flex gap-2 flex-wrap justify-center">
                                 {details.genres.map((genre: Genre) => (
                                     <span
                                         key={genre.id}
@@ -135,7 +159,6 @@ export const MediaDetails = () => {
                                 ))}
                             </div>
                         </div>
-
                         <div className="mt-6">
                             <h3 className="text-xl font-bold text-sky-500">
                                 Sinopse
@@ -183,7 +206,11 @@ export const MediaDetails = () => {
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-16">
                         {recommendations.map((movie) => (
-                            <MediaCard key={movie.id} {...movie} type={mediaType}/>
+                            <MediaCard
+                                key={movie.id}
+                                {...movie}
+                                type={mediaType}
+                            />
                         ))}
                     </div>
                 </section>
