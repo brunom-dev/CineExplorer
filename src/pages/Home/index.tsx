@@ -108,7 +108,7 @@ export function Home() {
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     {movies.map((movie) => (
-                        <MediaCard key={movie.id} {...movie} type={"movie"} />
+                        <MediaCard key={movie.id} {...movie} media_type={"movie"} />
                     ))}
                 </div>
             </section>
@@ -120,7 +120,7 @@ export function Home() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     
                     {series.map((series) => (
-                        <MediaCard key={series.id} {...series} type={"tv"} />
+                        <MediaCard key={series.id} {...series} media_type={"tv"} />
                     ))}
                 </div>
             </section>

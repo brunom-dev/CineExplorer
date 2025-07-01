@@ -209,7 +209,7 @@ export const MediaDetails = () => {
                             <MediaCard
                                 key={movie.id}
                                 {...movie}
-                                type={mediaType}
+                                media_type={mediaType}
                             />
                         ))}
                     </div>

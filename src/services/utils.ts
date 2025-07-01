@@ -134,3 +134,18 @@ export const getMediaRecommendations = async (
         return [];
     }
 };
+
+export const getMediaSearch = async (searchText: string): Promise<MediaItemProps[]> => {
+    try {
+        const response = await api.get(`/search/multi`, {params: {query: searchText}});
+
+        return response.data.results.filter(
+            (item: MediaItemProps) => (item.media_type === 'movie' || item.media_type === 'tv') && item.poster_path
+        );
+    }
+
+    catch (error) {
+        console.error("Erro ao fazer busca:", error);
+        return [];
+    }
+}
