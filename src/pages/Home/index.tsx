@@ -103,7 +103,7 @@ export function Home() {
             )}
 
             <section className="container mx-auto p-6 bg-gradient-to-b from-slate-950 to-slate-900">
-                <h2 className="text-3xl md:text-4xl text-slate-100 font-bold mb-10">
+                <h2 className="text-3xl md:text-4xl text-slate-100 font-bold mb-10" id="movies">
                     Filmes em Alta
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -114,7 +114,7 @@ export function Home() {
             </section>
 
             <section className="container mx-auto p-6 bg-slate-900 pb-15">
-                <h2 className="text-3xl md:text-4xl text-slate-100 font-bold mb-10 mt-5">
+                <h2 className="text-3xl md:text-4xl text-slate-100 font-bold mb-10 mt-5" id="series">
                     Séries Populares
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">

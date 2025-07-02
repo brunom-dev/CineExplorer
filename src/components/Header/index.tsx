@@ -84,20 +84,20 @@ export const Header = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link
-                                to={"#movies"}
+                            <a
+                                href={"#movies"}
                                 className="text-slate-100 hover:text-sky-600 transition-colors"
                             >
                                 Filmes
-                            </Link>
+                            </a>
                         </li>
                         <li>
-                            <Link
-                                to={"#series"}
+                            <a
+                                href={"#series"}
                                 className="text-slate-100 hover:text-sky-600 transition-colors"
                             >
                                 Séries
-                            </Link>
+                            </a>
                         </li>
                     </ul>
 
@@ -234,22 +234,22 @@ export const Header = () => {
                                     </Link>
                                 </li>
                                 <li className="w-full">
-                                    <Link
-                                        to={"#movies"}
+                                    <a
+                                        href={"#movies"}
                                         className="text-slate-100 active:text-sky-600"
                                         onClick={handleCloseMenu}
                                     >
                                         Filmes
-                                    </Link>
+                                    </a>
                                 </li>
                                 <li>
-                                    <Link
-                                        to={"#series"}
+                                    <a
+                                        href={"#series"}
                                         className="text-slate-100 activw:text-sky-600"
                                         onClick={handleCloseMenu}
                                     >
                                         Séries
-                                    </Link>
+                                    </a>
                                 </li>
                             </ul>
                         )}
