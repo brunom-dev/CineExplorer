@@ -11,7 +11,6 @@ import {
 import { PlayCircleIcon } from "lucide-react";
 import { MediaCard } from "../../components/MediaCard";
 import { ModalTrailer } from "../../components/ModalTrailer";
-import { Spinner } from "../../components/Spinner";
 import { SkeletonCard } from "../../components/SkeletonCard";
 
 export function Home() {
