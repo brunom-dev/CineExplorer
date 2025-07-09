@@ -20,6 +20,7 @@ export const CastCard = ({ member }: CastCardProps) => {
                         src={imageUrl}
                         alt={member.name}
                         className="w-full h-full object-cover"
+                        loading="lazy"
                     />
                 ) : (
                     <UserCircle2 className="w-16 h-16 text-slate-500" />

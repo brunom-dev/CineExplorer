@@ -21,6 +21,7 @@ import {
 } from "../../services/utils";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { FileQuestion } from "lucide-react";
+import { Spinner } from "../../components/Spinner";
 
 export const MediaDetails = () => {
     const location = useLocation();
@@ -77,62 +78,70 @@ export const MediaDetails = () => {
 
     if (isLoading) {
         return (
-            <div className="bg-slate-950 min-h-screen mt-15 w-full">
-                <div className="container md:px-10 px-20 py-24 relative z-10 flex flex-col md:flex-row items-center gap-10">
-                    <div className="w-full md:w-1/4 flex-shrink-0">
-                        <div className="aspect-[3/4] w-full bg-slate-800 rounded-xl animate-pulse"></div>
-                    </div>
-
-                    <div className="w-full md:w-2/3 animate-pulse">
-                        <div className="h-12 w-3/4 bg-slate-700 rounded-lg"></div>
-                        <div className="h-6 w-1/2 bg-slate-700 rounded-md mt-4"></div>
-                        <div className="h-20 w-full bg-slate-700 rounded-md mt-6"></div>
-                        <div className="h-12 w-48 bg-slate-700 rounded-lg mt-8"></div>
-                    </div>
+            <>
+                <div className="flex min-h-screen items-center justify-center md:hidden">
+                    <Spinner />
                 </div>
 
-                <main className="mt-2 mb-10 px-10">
-                    <div className="">
-                        <div className="h-8 w-64 bg-slate-700 rounded-md animate-pulse mb-6"></div>
-                        <div className="flex overflow-x-auto gap-4 py-4">
-                            {Array.from({ length: 10 }).map((_, index) => (
-                                <div key={index} className="w-36 flex-shrink-0">
-                                    <div className="h-44 w-full bg-slate-800 rounded-lg animate-pulse"></div>
-                                    <div className="h-4 w-28 bg-slate-700 rounded-md mt-2 mx-auto"></div>
-                                    <div className="h-3 w-20 bg-slate-700 rounded-md mt-1 mx-auto"></div>
-                                </div>
-                            ))}
+                <div className="bg-slate-950 min-h-screen mt-15 w-full hidden md:block">
+                    <div className="container md:px-10 px-20 py-24 relative z-10 flex flex-col md:flex-row items-center gap-10">
+                        <div className="w-full md:w-1/4 flex-shrink-0">
+                            <div className="aspect-[3/4] w-full bg-slate-800 rounded-xl animate-pulse"></div>
+                        </div>
+
+                        <div className="w-full md:w-2/3 animate-pulse">
+                            <div className="h-12 w-3/4 bg-slate-700 rounded-lg"></div>
+                            <div className="h-6 w-1/2 bg-slate-700 rounded-md mt-4"></div>
+                            <div className="h-20 w-full bg-slate-700 rounded-md mt-6"></div>
+                            <div className="h-12 w-48 bg-slate-700 rounded-lg mt-8"></div>
                         </div>
                     </div>
 
-                    <div className="mt-12">
-                        <div className="h-8 w-72 bg-slate-700 rounded-md animate-pulse mb-6"></div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                            {Array.from({ length: 5 }).map((_, index) => (
-                                <SkeletonCard key={index} />
-                            ))}
+                    <main className="mt-2 mb-10 px-10">
+                        <div className="">
+                            <div className="h-8 w-64 bg-slate-700 rounded-md animate-pulse mb-6"></div>
+                            <div className="flex overflow-x-auto gap-4 py-4">
+                                {Array.from({ length: 10 }).map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className="w-36 flex-shrink-0"
+                                    >
+                                        <div className="h-44 w-full bg-slate-800 rounded-lg animate-pulse"></div>
+                                        <div className="h-4 w-28 bg-slate-700 rounded-md mt-2 mx-auto"></div>
+                                        <div className="h-3 w-20 bg-slate-700 rounded-md mt-1 mx-auto"></div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                </main>
-            </div>
+
+                        <div className="mt-12">
+                            <div className="h-8 w-72 bg-slate-700 rounded-md animate-pulse mb-6"></div>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                                {Array.from({ length: 5 }).map((_, index) => (
+                                    <SkeletonCard key={index} />
+                                ))}
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </>
         );
     }
 
     if (!details) {
         return (
             <div className="bg-slate-950 flex  min-h-screen">
-
                 <div className="container mx-auto px-6 py-24 flex justify-center items-center">
-
                     <div className="bg-slate-800 p-8 rounded-xl shadow-lg text-center max-w-lg">
-
                         <FileQuestion className="h-20 w-20 mx-auto text-sky-600" />
 
                         <h2 className="text-3xl font-bold text-slate-100 mt-6">
                             Cena Cortada
                         </h2>
                         <p className="text-slate-400 mt-2">
-                            O filme que você busca pode não existir ou o rolo se perdeu. Vamos voltar ao lobby e escolher outro sucesso!
+                            O filme que você busca pode não existir ou o rolo se
+                            perdeu. Vamos voltar ao lobby e escolher outro
+                            sucesso!
                         </p>
 
                         <div className="mt-8">
@@ -181,6 +190,7 @@ export const MediaDetails = () => {
                             src={posterUrl}
                             alt={`Pôster de ${details.title}`}
                             className="rounded-xl shadow-2xl w-full"
+                            loading="lazy"
                         />
                     </figure>
 

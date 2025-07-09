@@ -15,6 +15,7 @@ export const MediaCard = (item: MediaItemProps) => {
                     src={imageUrl}
                     alt={`Pôster de ${displayName}`}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                 />
 
                 <div className="absolute top-2 right-2 bg-sky-600 text-slate-100 text-sm font-bold px-2 py-1 rounded-full z-10">
