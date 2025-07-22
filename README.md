@@ -1,6 +1,8 @@
 # CineExplorer 🎬
 
 <img width="900" alt="Image" src="https://github.com/user-attachments/assets/09d460a0-55ee-4aad-bd6d-2072cf0b574e" />
+<br>
+<br>
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
