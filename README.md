@@ -15,7 +15,7 @@
 
 **O projeto está no ar! Você pode acessá-lo através do link abaixo:**
 
-🔗 **[Clique aqui para ver o CineExplorer funcionando!](COLOQUE_O_LINK_DO_DEPLOY_AQUI)**
+🔗 **[Clique aqui para ver o CineExplorer funcionando!](https://cineexplorer.vercel.app/)**
 
 ---
 
