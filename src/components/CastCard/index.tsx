@@ -1,4 +1,4 @@
-import type { CastMember } from "../../types/MediaDetailsProps";
+import type { CastMember } from "../../types/Media/MediaDetailsProps";
 import { UserCircle2 } from "lucide-react";
 
 type CastCardProps = {
