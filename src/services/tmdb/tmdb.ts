@@ -1,9 +1,9 @@
 import { api } from "./api";
 
-import type { MediaItemProps } from "../types/MediaItemProps";
-import type { MediaDetailsProps } from "../types/MediaDetailsProps";
-import type { Credits } from "../types/MediaDetailsProps";
-import type { VideoProps } from "../types/VideoProps";
+import type { MediaItemProps } from "../../types/Media/MediaItemProps";
+import type { MediaDetailsProps } from "../../types/Media/MediaDetailsProps";
+import type { Credits } from "../../types/Media/MediaDetailsProps";
+import type { VideoProps } from "../../types/Media/VideoProps";
 
 export const getTrendingMovies = async (): Promise<MediaItemProps[]> => {
     try {
