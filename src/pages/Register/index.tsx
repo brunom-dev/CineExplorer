@@ -125,8 +125,8 @@ export function RegisterPage() {
     }
 
     return (
-        <div className="flex justify-center items-center px-3 my-10 min-h-screen">
-            <div className="flex flex-col bg-slate-900 justify-center items-center px-8 pt-3 pb-8 rounded-xl md:max-w-[450px] max-w-10/12 w-full md:mt-20">
+        <div className="flex justify-center items-center px-3 min-h-screen">
+            <div className="flex flex-col bg-slate-900 justify-center items-center px-8 pt-3 pb-8 rounded-xl md:max-w-[450px] max-w-10/12 w-full ">
                 <img
                     src={Logo}
                     alt="Logo cine explorer"
