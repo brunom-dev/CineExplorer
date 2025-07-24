@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 
-import type { MediaItemProps } from "../../types/MediaItemProps";
+import type { MediaItemProps } from "../../types/Media/MediaItemProps.ts";
 import type {
     MediaDetailsProps,
     Genre,
     Credits,
-} from "../../types/MediaDetailsProps";
+} from "../../types/Media/MediaDetailsProps.ts";
 
 import { MediaCard } from "../../components/MediaCard/index";
 import { ModalTrailer } from "../../components/ModalTrailer";
@@ -18,12 +18,12 @@ import {
     findBestTrailer,
     getMediaCredits,
     getMediaRecommendations,
-} from "../../services/utils";
+} from "../../services/tmdb/tmdb.ts";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { FileQuestion } from "lucide-react";
 import { Spinner } from "../../components/Spinner";
 
-export const MediaDetails = () => {
+export function MediaDetailsPage() {
     const location = useLocation();
     const { id } = useParams();
 

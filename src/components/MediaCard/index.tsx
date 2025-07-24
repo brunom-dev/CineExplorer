@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { MediaItemProps } from "../../types/MediaItemProps";
+import type { MediaItemProps } from "../../types/Media/MediaItemProps";
 
 
 

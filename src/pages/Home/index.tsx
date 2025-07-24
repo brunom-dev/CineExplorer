@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import type { MediaItemProps } from "../../types/MediaItemProps";
+import type { MediaItemProps } from "../../types/Media/MediaItemProps.ts";
 
 import {
     getTrendingMovies,
     getPopularSeries,
     getMediaTrailer,
     findBestTrailer,
-} from "../../services/utils";
+} from "../../services/tmdb/tmdb.ts";
 
 import { PlayCircleIcon } from "lucide-react";
 import { MediaCard } from "../../components/MediaCard";
 import { ModalTrailer } from "../../components/ModalTrailer";
 import { SkeletonCard } from "../../components/SkeletonCard";
 
-export function Home() {
+export function HomePage() {
     const [movies, setMovies] = useState<MediaItemProps[]>([]);
     const [series, setSeries] = useState<MediaItemProps[]>([]);
 
