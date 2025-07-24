@@ -6,7 +6,10 @@ import { getMediaSearch } from "../../services/tmdb/tmdb";
 import type { MediaItemProps } from "../../types/Media/MediaItemProps";
 import { SearchIcon, MenuIcon, XIcon, LogOutIcon } from "lucide-react";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
-import { logoutUserAuth } from "../../services/firebase/auth";
+import {
+    logoutUserAuth,
+    resendVerificationEmail,
+} from "../../services/firebase/auth";
 import { toast } from "sonner";
 
 export const Header = () => {
@@ -20,7 +23,7 @@ export const Header = () => {
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const profileMenuRef = useRef<HTMLDivElement>(null);
 
-    const { currentUser } = useAuth();
+    const { currentUser, firebaseUser } = useAuth();
     const location = useLocation();
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -103,6 +106,18 @@ export const Header = () => {
         }
     };
 
+    const handleResendEmail = async () => {
+        try {
+            await resendVerificationEmail();
+            toast.success("E-mail de verificação reenviado!", {
+                description: "Por favor, verifique sua caixa de entrada.",
+            });
+            setIsProfileMenuOpen(false);
+        } catch (error) {
+            toast.error("Erro ao reenviar e-mail.");
+        }
+    };
+
     return (
         <>
             <header
@@ -128,7 +143,8 @@ export const Header = () => {
                     </div>
 
                     {location.pathname !== "/login" &&
-                        location.pathname !== "/signup" && (
+                        location.pathname !== "/signup" &&
+                        location.pathname !== "/verify-email" && (
                             <div className="hidden md:flex relative items-center gap-2">
                                 <SearchIcon className="text-slate-400" />
                                 <input
@@ -181,7 +197,7 @@ export const Header = () => {
 
                     <div className="relative" ref={profileMenuRef}>
                         {currentUser ? (
-                            <div className="relative">
+                            <div className="relative mr-4">
                                 <button
                                     className={`relative flex items-center gap-2 text-slate-100 cursor-pointer py-1 px-2 rounded-lg`}
                                     onClick={() =>
@@ -196,6 +212,13 @@ export const Header = () => {
 
                                     <div className="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center font-bold">
                                         {currentUser.name.charAt(0)}
+
+                                        {!firebaseUser?.emailVerified && (
+                                            <span
+                                                className="absolute top-0 left-1.5 block h-3 w-3 rounded-full bg-yellow-400 ring-2 ring-slate-900"
+                                                title="E-mail não verificado"
+                                            ></span>
+                                        )}
                                     </div>
                                     <span className="font-semibold">
                                         {currentUser.name}
@@ -220,6 +243,32 @@ export const Header = () => {
                                         </div>
 
                                         <ul className="py-2">
+                                            {!firebaseUser?.emailVerified && (
+                                                <li>
+                                                    <button
+                                                        onClick={
+                                                            handleResendEmail
+                                                        }
+                                                        className="block w-full text-left px-4 py-2 text-yellow-400 hover:bg-slate-700 transition-colors cursor-pointer"
+                                                    >
+                                                        Verificar E-mail
+                                                    </button>
+                                                </li>
+                                            )}
+
+                                            <li>
+                                                <Link
+                                                    to="/"
+                                                    className="block w-full text-left px-4 py-3 text-slate-100 hover:bg-slate-700 transition-colors"
+                                                    onClick={() =>
+                                                        setIsProfileMenuOpen(
+                                                            false
+                                                        )
+                                                    }
+                                                >
+                                                    Inicio
+                                                </Link>
+                                            </li>
                                             <li>
                                                 <Link
                                                     to="/minha-lista"
@@ -238,7 +287,7 @@ export const Header = () => {
                                                     onClick={handleLogout}
                                                     className="cursor-pointer flex gap-2 w-full text-left px-4 py-3 text-red-400 hover:bg-slate-700 transition-colors"
                                                 >
-                                                    <LogOutIcon/> Sair
+                                                    <LogOutIcon /> Sair
                                                 </button>
                                             </li>
                                         </ul>
@@ -366,7 +415,7 @@ export const Header = () => {
                             className="w-full flex gap-2 cursor-pointer text-left p-4 rounded-lg text-red-400 hover:bg-slate-700 hover:text-red-500 transition-all"
                             onClick={handleLogout}
                         >
-                            <LogOutIcon/> Sair
+                            <LogOutIcon /> Sair
                         </button>
                     </div>
                 )}

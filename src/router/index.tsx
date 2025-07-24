@@ -5,6 +5,7 @@ import { HomePage } from "../pages/Home"
 import { MediaDetailsPage } from '../pages/MediaDetails/index';
 import { LoginPage } from "../pages/Login";
 import { RegisterPage } from "../pages/Register";
+import { VerifyEmailPage } from "../pages/VerifyEmail";
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
             {
                 path: "/signup",
                 element: <RegisterPage />
+            },
+            {
+                path: "/verify-email",
+                element: <VerifyEmailPage />
             }
 
         ],

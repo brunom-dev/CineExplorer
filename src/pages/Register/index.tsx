@@ -102,14 +102,11 @@ export function RegisterPage() {
 
             await registerUserDb(createdUser.uid, userName, userEmail);
 
-            toast.success(<span className="font-bold text-[16px]">Cadastro realizado com sucesso!</span>, {
-                description: 'Bem-vindo ao CineExplorer! Você será redirecionado.',
-                duration: 3000,
-            });
+            toast.success(<span className="font-bold text-[16px]">Cadastro realizado com sucesso!</span>);
             
             setTimeout(() => {
-                navigate("/"); 
-            }, 1000);
+                navigate("/verify-email");; 
+            }, 500);
 
             setUserEmail("");
             setUserPassword("");

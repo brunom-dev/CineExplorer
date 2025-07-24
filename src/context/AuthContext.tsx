@@ -4,13 +4,14 @@ import {
     useState,
     useEffect,
     type ReactNode,
+    useMemo,
 } from "react";
 
-import { onAuthStateChanged, type User } from "firebase/auth";
-import { db, auth } from "../services/firebase/firebaseConfig";
+import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
+import { app } from "../services/firebase/firebaseConfig"
 import type { UserProps as AppUser } from "../types/User/UserProps";
-import { doc, getDoc } from "firebase/firestore";
 
 interface AuthContextType {
     currentUser: AppUser | null;
@@ -26,6 +27,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 setFirebaseUser(user);
@@ -47,7 +51,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return () => unsubscribe();
     }, []);
 
-    const value = { currentUser, firebaseUser, isLoading };
+    const value = useMemo(
+        () => ({ currentUser, firebaseUser, isLoading }),
+        [currentUser, firebaseUser, isLoading]
+    );
 
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
