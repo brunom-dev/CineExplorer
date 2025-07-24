@@ -1,11 +1,15 @@
+import { useState } from "react";
 import type { CreateUserProps } from "../../types/User/UserProps";
 
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
 
-import { useState } from "react";
 import { registerUserAuth } from "../../services/firebase/auth";
 import { registerUserDb } from "../../services/firebase/user";
+
+import { toast } from "sonner";
+import { getFirebaseErrorMessage } from "../../utils/getFirebaseErrorMessage";
+
 
 export function RegisterPage() {
     const navigate = useNavigate();
@@ -98,15 +102,23 @@ export function RegisterPage() {
 
             await registerUserDb(createdUser.uid, userName, userEmail);
 
-            alert("Usuario cadastrado e logado!");
+            toast.success(<span className="font-bold text-[16px]">Cadastro realizado com sucesso!</span>, {
+                description: 'Bem-vindo ao CineExplorer! Você será redirecionado.',
+                duration: 3000,
+            });
+            
+            setTimeout(() => {
+                navigate("/"); 
+            }, 1000);
 
             setUserEmail("");
             setUserPassword("");
             setUserPasswordConfirm("");
-            navigate("/");
-        } catch (error) {
-            alert("Erro ao cadastrar");
-            console.log("Error ao cadastrar:", error);
+        } catch (error: any) {
+            const errorMessage = getFirebaseErrorMessage(error.code);
+            toast.error(<span className="font-bold text-[16px]">Falha no Cadastro</span>, {
+                description: errorMessage,
+            });
         } finally {
             setLoading(false);
         }

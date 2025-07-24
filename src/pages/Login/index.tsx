@@ -1,12 +1,14 @@
-    
 import { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
 import type { CreateUserProps } from "../../types/User/UserProps";
 import { loginUserAuth } from "../../services/firebase/auth";
+import { toast } from "sonner";
+import { getFirebaseErrorMessage } from "../../utils/getFirebaseErrorMessage";
 
 export function LoginPage() {
+    const navigate = useNavigate();
 
     const [userEmail, setUserEmail] = useState<string>("");
     const [userPassword, setUserPassword] = useState<string>("");
@@ -15,7 +17,6 @@ export function LoginPage() {
     const [passwordError, setPasswordError] = useState<string>("");
 
     const [loading, setLoading] = useState<boolean>(false);
-
 
     function validationEmail(email: string) {
         const regex = new RegExp(
@@ -29,9 +30,7 @@ export function LoginPage() {
 
         setEmailError("");
         setPasswordError("");
-        let isValid:boolean = true;
-
-
+        let isValid: boolean = true;
 
         if (!userEmail) {
             setEmailError("*Campo obrigatório.");
@@ -40,7 +39,7 @@ export function LoginPage() {
             setEmailError("Email inválido.");
             isValid = false;
         }
-        
+
         if (!userPassword) {
             setPasswordError("*Campo obrigatório.");
             isValid = false;
@@ -56,17 +55,30 @@ export function LoginPage() {
 
         const user: CreateUserProps = {
             email: userEmail,
-            password: userPassword
-        }
+            password: userPassword,
+        };
         setLoading(true);
 
         try {
             await loginUserAuth(user);
-            alert("Usuario logado");
+
+            toast.success(<span className="font-bold text-[16px]">Login efetuado com sucesso!</span>, {
+                description: "Bem-vindo de volta! Estamos te redirecionando.",
+                duration: 2000,
+            });
+
+            setTimeout(() => {
+                navigate("/");
+            }, 1000);
+        } catch (error: any) {
+            const errorMessage = getFirebaseErrorMessage(error.code);
+            toast.error(<span className="font-bold text-[16px]">Falha no Login</span>, {
+                description: errorMessage,
+            });
+        } finally {
+            setLoading(false);
         }
-        catch (error) {
-            alert(error)
-        }
+
     }
 
     return (
@@ -146,7 +158,7 @@ export function LoginPage() {
                         type="submit"
                         onClick={handleSubmit}
                     >
-                        { loading ? "Entrando..." : "Entrar"}
+                        {loading ? "Entrando..." : "Entrar"}
                     </button>
 
                     <div className="text-sky-600 mt-1 ml-1 text-center">

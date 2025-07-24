@@ -7,12 +7,14 @@ import type { MediaItemProps } from "../../types/Media/MediaItemProps";
 import { SearchIcon, MenuIcon, XIcon, CircleUserRoundIcon } from "lucide-react";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
 import { logoutUserAuth } from "../../services/firebase/auth";
+import { toast } from "sonner";
 
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState<MediaItemProps[]>([]);
+    const [searchFocus, setSearchFocus] = useState<boolean>(false);
 
     const { currentUser } = useAuth(); // Usando o contexto de autenticação
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -48,6 +50,26 @@ export const Header = () => {
         setSearchTerm("");
     };
 
+    const handleSearch = (value: boolean) => {
+        setTimeout(() => setSearchFocus(value), 100)
+    } 
+
+
+    const handleLogout = async () => {
+        try {
+            await logoutUserAuth()
+            toast.success(<span className="font-bold text-[16px]">Sessão encerrada!</span>, {
+                description: "Até a proxima.",
+                duration: 2000,
+            });
+        } catch {
+          toast.error(<span className="font-bold text-[16px]">Erro ao sair!</span>, {
+                description: "Tente novamente.",
+                duration: 2000,
+            });  
+        }
+    }
+
     return (
         <>
             <header
@@ -61,7 +83,7 @@ export const Header = () => {
                             onClick={() => setIsMenuOpen(true)}
                             className="p-2 cursor-pointer"
                         >
-                            <MenuIcon className="text-slate-100 hover:bg-slate-500 hover:rounded-full" />
+                            <MenuIcon className="text-slate-100 hover:text-sky-500 transition-all" />
                         </button>
                         <Link to="/" onClick={handleCloseMenu}>
                             <img
@@ -77,11 +99,13 @@ export const Header = () => {
                         <input
                             type="text"
                             placeholder="Buscar por um filme ou série..."
-                            className="bg-transparent text-slate-100 focus:outline-none w-64"
+                            className="bg-transparent text-slate-100 focus:outline-none w-56 border-b-1 border-slate-400"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
+                            onFocus={() => handleSearch(true)}
+                            onBlur={() => handleSearch(false)}
                         />
-                        {searchTerm && searchResults.length > 0 && (
+                        {searchTerm && searchResults.length > 0 && searchFocus && (
                             <div className="absolute top-full right-2 pr-4 mt-2 w-80 max-h-96 overflow-y-auto bg-slate-800 rounded-lg shadow-xl">
                                 <ul>
                                     {searchResults.map((item) => (
@@ -242,7 +266,7 @@ export const Header = () => {
                     <div className="mt-auto pt-6 border-t border-slate-700">
                         <button
                             className="w-full cursor-pointer text-left p-4 rounded-lg text-slate-100 hover:bg-slate-700"
-                            onClick={logoutUserAuth}
+                            onClick={handleLogout}
                         >
                             Sair
                         </button>

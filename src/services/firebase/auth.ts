@@ -12,7 +12,6 @@ export async function registerUserAuth(user: CreateUserProps) {
     }
 
     catch(error) {
-        console.error(error)
         throw error
     }
 }
@@ -21,11 +20,10 @@ export async function loginUserAuth(user: CreateUserProps)  {
 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, user.email, user.password)
-        console.log(userCredential.user);
+        return userCredential
     }
 
     catch(error) {
-        console.error("Erro ao fazer login")
         throw error
     }
 
@@ -35,10 +33,7 @@ export async function loginUserAuth(user: CreateUserProps)  {
 
 export async function logoutUserAuth() {
     await signOut(auth)
-    .then(() => {
-        alert("Sessão encerrada!");
-    })
     .catch((error) => {
-        alert(`Erro ao deslogar: ${error}`)
+        throw error
     })
  }
