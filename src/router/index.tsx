@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom"
 import { Layout } from "../components/Layout"
 
-import { Home } from "../pages/Home"
-import { MediaDetails } from '../pages/MediaDetails/index';
+import { HomePage } from "../pages/Home"
+import { MediaDetailsPage } from '../pages/MediaDetails/index';
+import { LoginPage } from "../pages/Login";
+import { RegisterPage } from "../pages/Register";
 
 export const router = createBrowserRouter([
     {
@@ -11,15 +13,23 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />
+                element: <HomePage />
             },
             {
                 path: "/movie/:id",
-                element: <MediaDetails />
+                element: <MediaDetailsPage />
             },
             {
                 path: "/tv/:id",
-                element: <MediaDetails />
+                element: <MediaDetailsPage />
+            }, 
+            {
+                path: "/login",
+                element: <LoginPage />
+            },
+            {
+                path: "/signup",
+                element: <RegisterPage />
             }
 
         ],
