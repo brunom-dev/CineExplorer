@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useDebounce } from "../../hook/useDebounce";
 import { getMediaSearch } from "../../services/tmdb/tmdb";
 import type { MediaItemProps } from "../../types/Media/MediaItemProps";
-import { SearchIcon, MenuIcon, XIcon, CircleUserRoundIcon, LogOutIcon } from "lucide-react";
+import { SearchIcon, MenuIcon, XIcon, LogOutIcon } from "lucide-react";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
 import { logoutUserAuth } from "../../services/firebase/auth";
 import { toast } from "sonner";
@@ -203,7 +203,7 @@ export const Header = () => {
                                 </button>
 
                                 {isProfileMenuOpen && (
-                                    <div className="mt-4 absolute top-full right-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl overflow-hidden">
+                                    <div className="mt-4 absolute top-full right-0 w-56 bg-slate-800 rounded-lg shadow-xl overflow-hidden">
                                         <div className="px-4 py-3 border-b border-slate-700">
                                             <p
                                                 className="font-bold text-slate-100 truncate"
