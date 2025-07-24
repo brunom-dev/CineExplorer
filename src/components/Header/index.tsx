@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useDebounce } from "../../hook/useDebounce";
 import { getMediaSearch } from "../../services/tmdb/tmdb";
 import type { MediaItemProps } from "../../types/Media/MediaItemProps";
-import { SearchIcon, MenuIcon, XIcon, CircleUserRoundIcon } from "lucide-react";
+import { SearchIcon, MenuIcon, XIcon, CircleUserRoundIcon, LogOutIcon } from "lucide-react";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
 import { logoutUserAuth } from "../../services/firebase/auth";
 import { toast } from "sonner";
@@ -18,8 +18,9 @@ export const Header = () => {
     const [searchFocus, setSearchFocus] = useState<boolean>(false);
 
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const profileMenuRef = useRef<HTMLDivElement>(null);
 
-    const { currentUser } = useAuth(); 
+    const { currentUser } = useAuth();
     const location = useLocation();
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -48,6 +49,27 @@ export const Header = () => {
             document.body.classList.remove("overflow-hidden");
         };
     }, [isMenuOpen]);
+
+    useEffect(() => {
+        // Função que será chamada quando um clique acontecer
+        const handleClickOutside = (event: MouseEvent) => {
+            // Verifica se a ref existe e se o clique NÃO foi dentro do elemento da ref
+            if (
+                profileMenuRef.current &&
+                !profileMenuRef.current.contains(event.target as Node)
+            ) {
+                setIsProfileMenuOpen(false); // Fecha o menu
+            }
+        };
+
+        // Adiciona o "ouvinte" de cliques no documento inteiro
+        document.addEventListener("mousedown", handleClickOutside);
+
+        // Função de limpeza: remove o "ouvinte" quando o componente não for mais necessário
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const handleCloseMenu = () => {
         setIsMenuOpen(false);
@@ -89,85 +111,89 @@ export const Header = () => {
                 }`}
             >
                 <nav className="container mx-auto py-6 px-6 flex items-center justify-between">
-                        <div className="flex items-center md:gap-8 gap-5">
-                            <button
-                                onClick={() => setIsMenuOpen(true)}
-                                className="p-2 cursor-pointer"
-                            >
-                                <MenuIcon className="text-slate-100 hover:text-sky-500 transition-all" />
-                            </button>
-                            <Link to="/" onClick={handleCloseMenu}>
-                                <img
-                                    src={Logo}
-                                    className="md:h-16 h-14"
-                                    alt="CineExplorer Logo"
-                                />
-                            </Link>
-                        </div>
-
-                    {(location.pathname !== "/login" && location.pathname !== "/signup") && 
-                        <div className="hidden md:flex relative items-center gap-2">
-                            <SearchIcon className="text-slate-400" />
-                            <input
-                                type="text"
-                                placeholder="Buscar por um filme ou série..."
-                                className="bg-transparent text-slate-100 focus:outline-none w-56 border-b-1 border-slate-400"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                onFocus={() => handleSearch(true)}
-                                onBlur={() => handleSearch(false)}
+                    <div className="flex items-center md:gap-8 gap-5">
+                        <button
+                            onClick={() => setIsMenuOpen(true)}
+                            className="p-2 cursor-pointer"
+                        >
+                            <MenuIcon className="text-slate-100 hover:text-sky-500 transition-all" />
+                        </button>
+                        <Link to="/" onClick={handleCloseMenu}>
+                            <img
+                                src={Logo}
+                                className="md:h-16 h-14"
+                                alt="CineExplorer Logo"
                             />
-                            {searchTerm &&
-                                searchResults.length > 0 &&
-                                searchFocus && (
-                                    <div className="absolute top-full right-2 pr-4 mt-2 w-80 max-h-96 overflow-y-auto bg-slate-800 rounded-lg shadow-xl">
-                                        <ul>
-                                            {searchResults.map((item) => (
-                                                <li key={item.id}>
-                                                    <Link
-                                                        to={`/${item.media_type}/${item.id}`}
-                                                        className="flex items-center gap-4 p-3 hover:bg-slate-700 transition-colors"
-                                                    >
-                                                        <img
-                                                            src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
-                                                            alt=""
-                                                            className="w-10 h-14 object-cover rounded"
-                                                        />
-                                                        <div>
-                                                            <p className="font-bold text-slate-100">
-                                                                {item.title ||
-                                                                    item.name}
-                                                            </p>
-                                                            <p className="text-sm text-slate-400">
-                                                                {item.media_type ===
-                                                                "movie"
-                                                                    ? "Filme"
-                                                                    : "Série"}
-                                                            </p>
-                                                        </div>
-                                                    </Link>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                        </div>
-                    }
+                        </Link>
+                    </div>
 
-                    <div className="flex items-center md:mr-4">
+                    {location.pathname !== "/login" &&
+                        location.pathname !== "/signup" && (
+                            <div className="hidden md:flex relative items-center gap-2">
+                                <SearchIcon className="text-slate-400" />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar por um filme ou série..."
+                                    className="bg-transparent text-slate-100 focus:outline-none w-56 border-b-1 border-slate-400"
+                                    value={searchTerm}
+                                    onChange={(e) =>
+                                        setSearchTerm(e.target.value)
+                                    }
+                                    onFocus={() => handleSearch(true)}
+                                    onBlur={() => handleSearch(false)}
+                                />
+                                {searchTerm &&
+                                    searchResults.length > 0 &&
+                                    searchFocus && (
+                                        <div className="absolute top-full right-2 pr-4 mt-2 w-80 max-h-96 overflow-y-auto bg-slate-800 rounded-lg shadow-xl">
+                                            <ul>
+                                                {searchResults.map((item) => (
+                                                    <li key={item.id}>
+                                                        <Link
+                                                            to={`/${item.media_type}/${item.id}`}
+                                                            className="flex items-center gap-4 p-3 hover:bg-slate-700 transition-colors"
+                                                        >
+                                                            <img
+                                                                src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
+                                                                alt=""
+                                                                className="w-10 h-14 object-cover rounded"
+                                                            />
+                                                            <div>
+                                                                <p className="font-bold text-slate-100">
+                                                                    {item.title ||
+                                                                        item.name}
+                                                                </p>
+                                                                <p className="text-sm text-slate-400">
+                                                                    {item.media_type ===
+                                                                    "movie"
+                                                                        ? "Filme"
+                                                                        : "Série"}
+                                                                </p>
+                                                            </div>
+                                                        </Link>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                            </div>
+                        )}
+
+                    <div className="relative" ref={profileMenuRef}>
                         {currentUser ? (
                             <div className="relative">
-                                {/* O botão agora controla o clique */}
                                 <button
-                                    className="flex items-center gap-2 text-slate-100 cursor-pointer hover:ring-2 hover:ring-sky-400 p-1 rounded-full"
-                                    // A MUDANÇA PRINCIPAL ESTÁ AQUI:
-                                    // onClick agora "alterna" (toggle) o estado do menu
+                                    className={`relative flex items-center gap-2 text-slate-100 cursor-pointer py-1 px-2 rounded-lg`}
                                     onClick={() =>
                                         setIsProfileMenuOpen(
                                             (prevState) => !prevState
                                         )
                                     }
                                 >
+                                    {isProfileMenuOpen && (
+                                        <span className="absolute inset-0 ring-2 ring-sky-400 rounded-full animate-pulse"></span>
+                                    )}
+
                                     <div className="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center font-bold">
                                         {currentUser.name.charAt(0)}
                                     </div>
@@ -176,15 +202,28 @@ export const Header = () => {
                                     </span>
                                 </button>
 
-                                {/* O dropdown continua o mesmo, aparecendo com base no estado */}
                                 {isProfileMenuOpen && (
-                                    <div className="absolute top-full right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-xl py-2">
-                                        <ul>
+                                    <div className="mt-4 absolute top-full right-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl overflow-hidden">
+                                        <div className="px-4 py-3 border-b border-slate-700">
+                                            <p
+                                                className="font-bold text-slate-100 truncate"
+                                                title={currentUser.name}
+                                            >
+                                                {currentUser.name}
+                                            </p>
+                                            <p
+                                                className="text-sm text-slate-400 truncate"
+                                                title={currentUser.email ?? ""}
+                                            >
+                                                {currentUser.email}
+                                            </p>
+                                        </div>
+
+                                        <ul className="py-2">
                                             <li>
                                                 <Link
                                                     to="/minha-lista"
-                                                    className="block w-full text-left px-4 py-2 text-slate-100 hover:bg-slate-700"
-                                                    // Adicionamos um onClick aqui para fechar o menu ao navegar
+                                                    className="block w-full text-left px-4 py-3 text-slate-100 hover:bg-slate-700 transition-colors"
                                                     onClick={() =>
                                                         setIsProfileMenuOpen(
                                                             false
@@ -197,9 +236,9 @@ export const Header = () => {
                                             <li>
                                                 <button
                                                     onClick={handleLogout}
-                                                    className="block w-full text-left px-4 py-2 text-red-400 hover:bg-slate-700"
+                                                    className="cursor-pointer flex gap-2 w-full text-left px-4 py-3 text-red-400 hover:bg-slate-700 transition-colors"
                                                 >
-                                                    Sair
+                                                    <LogOutIcon/> Sair
                                                 </button>
                                             </li>
                                         </ul>
@@ -233,7 +272,7 @@ export const Header = () => {
                 `}
             >
                 <div className="flex items-center justify-between pb-6 border-b border-slate-700">
-                    <h2 className="text-xl text-sky-600 font-bold">
+                    <h2 className="text-xl text-sky-500 font-bold">
                         Navegação
                     </h2>
                     <button onClick={handleCloseMenu}>
@@ -252,9 +291,9 @@ export const Header = () => {
                     />
                 </div>
 
-                <div className="flex-1 overflow-y-auto custom-scrollbar">
+                <div className="flex-1 overflow-y-auto custom-scrollbar ">
                     {searchResults.length > 0 ? (
-                        <ul className="overflow-y-auto custom-scrollbar">
+                        <ul className="overflow-y-auto custom-scrollbar transition-all">
                             {searchResults.map((item) => (
                                 <li key={item.id}>
                                     <Link
@@ -282,12 +321,12 @@ export const Header = () => {
                             ))}
                         </ul>
                     ) : (
-                        <ul className="flex flex-col gap-2 font-bold text-xl pt-8 flex-1">
+                        <ul className="flex flex-col gap-2 font-bold text-xl pt-8 flex-1  transition-all">
                             <li>
                                 <NavLink
                                     to={"/"}
                                     className={({ isActive }) =>
-                                        `block p-4 rounded-lg ${
+                                        `block p-4 rounded-lg  transition-all ${
                                             isActive
                                                 ? "bg-sky-600 text-white"
                                                 : "text-slate-100 hover:bg-slate-700"
@@ -301,7 +340,7 @@ export const Header = () => {
                             <li>
                                 <a
                                     href={"/#movies"}
-                                    className="block p-4 rounded-lg text-slate-100 hover:bg-slate-700"
+                                    className="block p-4 rounded-lg text-slate-100 hover:bg-slate-700  transition-all"
                                     onClick={handleCloseMenu}
                                 >
                                     Filmes
@@ -310,7 +349,7 @@ export const Header = () => {
                             <li>
                                 <a
                                     href={"/#series"}
-                                    className="block p-4 rounded-lg text-slate-100 hover:bg-slate-700"
+                                    className="block p-4 rounded-lg text-slate-100 hover:bg-slate-700  transition-all"
                                     onClick={handleCloseMenu}
                                 >
                                     Séries
@@ -324,10 +363,10 @@ export const Header = () => {
                 {currentUser && (
                     <div className="mt-auto pt-6 border-t border-slate-700">
                         <button
-                            className="w-full cursor-pointer text-left p-4 rounded-lg text-slate-100 hover:bg-slate-700"
+                            className="w-full flex gap-2 cursor-pointer text-left p-4 rounded-lg text-red-400 hover:bg-slate-700 hover:text-red-500 transition-all"
                             onClick={handleLogout}
                         >
-                            Sair
+                            <LogOutIcon/> Sair
                         </button>
                     </div>
                 )}
