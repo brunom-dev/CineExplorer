@@ -6,7 +6,7 @@ import {
     type ReactNode,
 } from "react";
 
-import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
+import { onAuthStateChanged, type User } from "firebase/auth";
 import { db, auth } from "../services/firebase/firebaseConfig";
 
 import type { UserProps as AppUser } from "../types/User/UserProps";
