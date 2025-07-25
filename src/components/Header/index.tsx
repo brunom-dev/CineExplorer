@@ -26,6 +26,12 @@ export const Header = () => {
     const { currentUser, firebaseUser } = useAuth();
     const location = useLocation();
 
+    const showSearch: boolean =
+        location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        location.pathname !== "/verify-email" &&
+        location.pathname !== "/forgot-password";
+
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
     useEffect(() => {
@@ -121,8 +127,10 @@ export const Header = () => {
     return (
         <>
             <header
-                className={`w-full fixed top-0 left-0 z-30 transition-all duration-300 ease-in-out ${
-                    isScrolled ? "bg-slate-900 shadow-lg" : "bg-transparent"
+                className={`w-full fixed top-0 left-0 z-30 transition-all duration-300 ease-in-out pb-1 ${
+                    isScrolled
+                        ? "bg-slate-900 shadow-lg shadow-black"
+                        : "bg-transparent"
                 }`}
             >
                 <nav className="container mx-auto py-6 px-6 flex items-center justify-between">
@@ -142,58 +150,54 @@ export const Header = () => {
                         </Link>
                     </div>
 
-                    {location.pathname !== "/login" &&
-                        location.pathname !== "/signup" &&
-                        location.pathname !== "/verify-email" && (
-                            <div className="hidden md:flex relative items-center gap-2">
-                                <SearchIcon className="text-slate-400" />
-                                <input
-                                    type="text"
-                                    placeholder="Buscar por um filme ou série..."
-                                    className="bg-transparent text-slate-100 focus:outline-none w-56 border-b-1 border-slate-400"
-                                    value={searchTerm}
-                                    onChange={(e) =>
-                                        setSearchTerm(e.target.value)
-                                    }
-                                    onFocus={() => handleSearch(true)}
-                                    onBlur={() => handleSearch(false)}
-                                />
-                                {searchTerm &&
-                                    searchResults.length > 0 &&
-                                    searchFocus && (
-                                        <div className="absolute top-full right-2 pr-4 mt-2 w-80 max-h-96 overflow-y-auto bg-slate-800 rounded-lg shadow-xl">
-                                            <ul>
-                                                {searchResults.map((item) => (
-                                                    <li key={item.id}>
-                                                        <Link
-                                                            to={`/${item.media_type}/${item.id}`}
-                                                            className="flex items-center gap-4 p-3 hover:bg-slate-700 transition-colors"
-                                                        >
-                                                            <img
-                                                                src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
-                                                                alt=""
-                                                                className="w-10 h-14 object-cover rounded"
-                                                            />
-                                                            <div>
-                                                                <p className="font-bold text-slate-100">
-                                                                    {item.title ||
-                                                                        item.name}
-                                                                </p>
-                                                                <p className="text-sm text-slate-400">
-                                                                    {item.media_type ===
-                                                                    "movie"
-                                                                        ? "Filme"
-                                                                        : "Série"}
-                                                                </p>
-                                                            </div>
-                                                        </Link>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                            </div>
-                        )}
+                    {showSearch && (
+                        <div className="hidden md:flex relative items-center gap-2">
+                            <SearchIcon className="text-slate-400" />
+                            <input
+                                type="text"
+                                placeholder="Buscar por um filme ou série..."
+                                className="bg-transparent text-slate-100 focus:outline-none w-56 border-b-1 border-slate-400"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onFocus={() => handleSearch(true)}
+                                onBlur={() => handleSearch(false)}
+                            />
+                            {searchTerm &&
+                                searchResults.length > 0 &&
+                                searchFocus && (
+                                    <div className="absolute top-full right-2 pr-4 mt-2 w-80 max-h-96 overflow-y-auto bg-slate-800 rounded-lg shadow-xl">
+                                        <ul>
+                                            {searchResults.map((item) => (
+                                                <li key={item.id}>
+                                                    <Link
+                                                        to={`/${item.media_type}/${item.id}`}
+                                                        className="flex items-center gap-4 p-3 hover:bg-slate-700 transition-colors"
+                                                    >
+                                                        <img
+                                                            src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
+                                                            alt=""
+                                                            className="w-10 h-14 object-cover rounded"
+                                                        />
+                                                        <div>
+                                                            <p className="font-bold text-slate-100">
+                                                                {item.title ||
+                                                                    item.name}
+                                                            </p>
+                                                            <p className="text-sm text-slate-400">
+                                                                {item.media_type ===
+                                                                "movie"
+                                                                    ? "Filme"
+                                                                    : "Série"}
+                                                            </p>
+                                                        </div>
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                        </div>
+                    )}
 
                     <div className="relative" ref={profileMenuRef}>
                         {currentUser ? (
@@ -297,7 +301,7 @@ export const Header = () => {
                         ) : (
                             <Link
                                 to="/login"
-                                className="bg-sky-600 text-white font-bold px-8 py-2 rounded-lg hover:bg-sky-700 transition-colors"
+                                className="bg-sky-600 text-white font-bold px-8 py-2 rounded-lg hover:bg-sky-700 transition-colors mr-4"
                             >
                                 Entrar
                             </Link>

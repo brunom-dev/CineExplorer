@@ -36,7 +36,7 @@ export function VerifyEmailPage() {
     return (
         <div className="bg-slate-950 min-h-screen flex items-center justify-center text-center text-white p-4">
             <div className="bg-slate-800 p-8 rounded-xl shadow-lg max-w-md">
-                <MailCheck className="h-20 w-20 mx-auto text-green-500" />
+                <MailCheck className="h-20 w-20 mx-auto text-sky-500" />
                 <h1 className="text-3xl font-bold mt-6">
                     Verifique seu E-mail
                 </h1>

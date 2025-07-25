@@ -149,8 +149,8 @@ export function LoginPage() {
                         </span>
                     </div>
 
-                    <div className="text-sky-600 -mt-1 ml-1">
-                        <Link to={"#forgot"}>Esqueceu a senha? </Link>
+                    <div className="text-sky-600 -mt-2 ml-1">
+                        <Link to={"/forgot-password"}>Esqueceu a senha? </Link>
                     </div>
 
                     <button

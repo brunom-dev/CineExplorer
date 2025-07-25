@@ -1,6 +1,7 @@
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
+    sendPasswordResetEmail,
     signInWithEmailAndPassword,
     signOut,
 } from "firebase/auth";
@@ -44,7 +45,7 @@ export async function logoutUserAuth() {
 }
 
 export const resendVerificationEmail = async (): Promise<void> => {
-    const user = auth.currentUser; 
+    const user = auth.currentUser;
 
     if (user) {
         try {
@@ -54,5 +55,13 @@ export const resendVerificationEmail = async (): Promise<void> => {
         }
     } else {
         throw new Error("Nenhum usuário logado para reenviar o e-mail.");
+    }
+};
+
+export const sendPasswordReset = async (email: string): Promise<void> => {
+    try {
+        await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+        throw error;
     }
 };
