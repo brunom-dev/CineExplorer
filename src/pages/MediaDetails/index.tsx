@@ -20,7 +20,7 @@ import {
     getMediaRecommendations,
 } from "../../services/tmdb/tmdb.ts";
 import { SkeletonCard } from "../../components/SkeletonCard";
-import { FileQuestion } from "lucide-react";
+import { AlertTriangleIcon } from "lucide-react";
 import { Spinner } from "../../components/Spinner";
 
 export function MediaDetailsPage() {
@@ -133,7 +133,7 @@ export function MediaDetailsPage() {
             <div className="bg-slate-950 flex  min-h-screen">
                 <div className="container mx-auto px-6 py-24 flex justify-center items-center">
                     <div className="bg-slate-800 p-8 rounded-xl shadow-lg text-center max-w-lg">
-                        <FileQuestion className="h-20 w-20 mx-auto text-sky-600" />
+                        <AlertTriangleIcon className="h-20 w-20 mx-auto text-sky-600" />
 
                         <h2 className="text-3xl font-bold text-slate-100 mt-6">
                             Cena Cortada
