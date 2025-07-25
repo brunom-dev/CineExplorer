@@ -1,7 +1,5 @@
-// src/pages/NotFoundPage.tsx
-
 import { Link } from "react-router-dom";
-import { AlertTriangle } from "lucide-react"; // Um bom ícone para páginas de erro
+import { AlertTriangle } from "lucide-react"; 
 
 export function NotFoundPage() {
     return (
