@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 
-import type { MediaItemProps } from "../../types/Media/MediaItemProps.ts";
+import type {
+    FavoriteItemProps,
+    MediaItemProps,
+} from "../../types/Media/MediaItemProps.ts";
 import type {
     MediaDetailsProps,
     Genre,
@@ -22,6 +25,7 @@ import {
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { AlertTriangleIcon } from "lucide-react";
 import { Spinner } from "../../components/Spinner";
+import { FavoriteButton } from "../../components/FavoriteButton/index.tsx";
 
 export function MediaDetailsPage() {
     const location = useLocation();
@@ -165,7 +169,6 @@ export function MediaDetailsPage() {
         "release_date" in details
             ? details.release_date
             : details.first_air_date;
-    console.log(details);
 
     const year = releaseDate ? new Date(releaseDate).getFullYear() : "N/A";
 
@@ -173,6 +176,13 @@ export function MediaDetailsPage() {
         "runtime" in details && details.runtime > 0
             ? `${Math.floor(details.runtime / 60)}h ${details.runtime % 60}m`
             : null;
+
+    const mediaItem: FavoriteItemProps = {
+        id: details.id,
+        name: details.name,
+        title: details.title,
+        media_type: mediaType,
+    };
 
     return (
         <div className="min-h-[90vh] text-white">
@@ -195,12 +205,19 @@ export function MediaDetailsPage() {
                     </figure>
 
                     <div className="w-full md:w-2/3 text-center md:text-left text-slate-100">
-                        <h1 className="text-4xl lg:text-5xl font-bold">
-                            {mediaType === "movie"
-                                ? details.title
-                                : details.name}{" "}
-                            ({year})
-                        </h1>
+                        <div className="flex gap-3 items-center">
+                            <h1 className="text-4xl lg:text-5xl font-bold relative">
+                                {mediaType === "movie"
+                                    ? details.title
+                                    : details.name}{" "}
+                                ({year})
+                            </h1>
+
+                            <FavoriteButton
+                                mediaItem={mediaItem}
+                                absoluteProp={false}
+                            />
+                        </div>
 
                         {details.tagline && (
                             <p className="text-slate-300 italic mt-2 text-lg">
@@ -299,4 +316,4 @@ export function MediaDetailsPage() {
             />
         </div>
     );
-};
+}

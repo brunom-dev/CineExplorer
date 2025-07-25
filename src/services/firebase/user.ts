@@ -1,8 +1,22 @@
-import { doc, setDoc } from "firebase/firestore";
+import {
+    doc,
+    setDoc,
+    updateDoc,
+    arrayUnion,
+    arrayRemove,
+    getDoc,
+} from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import type {
+    FavoriteItemProps,
+    MediaItemProps,
+} from "../../types/Media/MediaItemProps";
 
-
-export const registerUserDb = async (uid: string, name: string, email: string) => {
+export const registerUserDb = async (
+    uid: string,
+    name: string,
+    email: string
+): Promise<void> => {
     if (!uid) return;
 
     try {
@@ -14,6 +28,13 @@ export const registerUserDb = async (uid: string, name: string, email: string) =
         });
     } catch (error) {
         console.error("Erro ao criar documento do usuário:", error);
-        throw error; 
+        throw error;
     }
+};
+
+export const getUserDocument = async (uid: string) => {
+    if (!uid) return null;
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() ? docSnap.data() : null;
 };

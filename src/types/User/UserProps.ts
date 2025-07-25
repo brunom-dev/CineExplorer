@@ -1,16 +1,11 @@
+import type { FavoriteItemProps } from "../Media/MediaItemProps";
 
 export type UserProps = {
     uid: string;
     name: string;
     email: string;
     createAt: Date;
-    myFavoriteList: [
-        {
-            id: number,
-            media_type: 'movie' | 'tv'
-            addAt: Date;
-        }
-    ]
+    myFavorite: FavoriteItemProps[];
 } 
 
 export type CreateUserProps = {

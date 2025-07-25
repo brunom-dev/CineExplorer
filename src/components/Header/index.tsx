@@ -60,21 +60,21 @@ export const Header = () => {
     }, [isMenuOpen]);
 
     useEffect(() => {
-        // Função que será chamada quando um clique acontecer
+        console.log(currentUser?.myFavorite)
+    }, [])
+
+    useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            // Verifica se a ref existe e se o clique NÃO foi dentro do elemento da ref
             if (
                 profileMenuRef.current &&
                 !profileMenuRef.current.contains(event.target as Node)
             ) {
-                setIsProfileMenuOpen(false); // Fecha o menu
+                setIsProfileMenuOpen(false); 
             }
         };
 
-        // Adiciona o "ouvinte" de cliques no documento inteiro
         document.addEventListener("mousedown", handleClickOutside);
 
-        // Função de limpeza: remove o "ouvinte" quando o componente não for mais necessário
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
@@ -201,7 +201,7 @@ export const Header = () => {
 
                     <div className="relative" ref={profileMenuRef}>
                         {currentUser ? (
-                            <div className="relative mr-4">
+                            <div className="relative md:mr-4">
                                 <button
                                     className={`relative flex items-center gap-2 text-slate-100 cursor-pointer py-1 px-2 rounded-lg`}
                                     onClick={() =>
@@ -275,7 +275,7 @@ export const Header = () => {
                                             </li>
                                             <li>
                                                 <Link
-                                                    to="/minha-lista"
+                                                    to="/myfavorites"
                                                     className="block w-full text-left px-4 py-3 text-slate-100 hover:bg-slate-700 transition-colors"
                                                     onClick={() =>
                                                         setIsProfileMenuOpen(
@@ -283,7 +283,7 @@ export const Header = () => {
                                                         )
                                                     }
                                                 >
-                                                    Minha Lista
+                                                    Meus Favoritos
                                                 </Link>
                                             </li>
                                             <li>
@@ -317,6 +317,7 @@ export const Header = () => {
                 ></div>
             )}
 
+            {/* SIDEBAR */}
             <div
                 className={`
                 fixed top-0 left-0 h-full w-4/5 max-w-xs bg-slate-900 shadow-xl z-50 p-6 flex flex-col
@@ -390,6 +391,25 @@ export const Header = () => {
                                     Início
                                 </NavLink>
                             </li>
+
+                            {currentUser && (
+                                <li>
+                                    <NavLink
+                                        to="/myfavorites"
+                                        className={({ isActive }) =>
+                                            `block p-4 rounded-lg ${
+                                                isActive
+                                                    ? "bg-sky-600 text-white"
+                                                    : "text-slate-100 hover:bg-slate-700"
+                                            }`
+                                        }
+                                        onClick={handleCloseMenu}
+                                    >
+                                        Meus Favoritos
+                                    </NavLink>
+                                </li>
+                            )}
+
                             <li>
                                 <a
                                     href={"/#movies"}

@@ -8,6 +8,8 @@ import { RegisterPage } from "../pages/Register";
 import { VerifyEmailPage } from "../pages/VerifyEmail";
 import { ForgotPasswordPage } from "../pages/ForgotPassword";
 import { NotFoundPage } from "../pages/NotFound";
+import { MyFavoritesPage } from "../pages/MyFavorites";
+import { ProtectedRoute } from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
     {
@@ -41,6 +43,17 @@ export const router = createBrowserRouter([
             {
                 path: "/forgot-password",
                 element: <ForgotPasswordPage />
+            },
+
+
+            {
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        path: "/myfavorites",
+                        element: <MyFavoritesPage />
+                    }
+                ]
             },
             
             

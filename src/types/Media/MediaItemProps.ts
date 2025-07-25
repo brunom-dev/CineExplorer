@@ -11,3 +11,12 @@ export type MediaItemProps = {
     first_air_date?: string; // (para séries)
     media_type: 'movie' | 'tv';
 };
+
+
+export type FavoriteItemProps = {
+    id: number;
+    title?: string; // (para filmes)
+    name?: string; // (para séries)
+    media_type: 'movie' | 'tv';
+    createAt?: Date;
+}
