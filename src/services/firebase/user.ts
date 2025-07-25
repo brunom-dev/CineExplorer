@@ -1,16 +1,9 @@
 import {
     doc,
     setDoc,
-    updateDoc,
-    arrayUnion,
-    arrayRemove,
     getDoc,
 } from "firebase/firestore";
 import { db } from "./firebaseConfig";
-import type {
-    FavoriteItemProps,
-    MediaItemProps,
-} from "../../types/Media/MediaItemProps";
 
 export const registerUserDb = async (
     uid: string,
