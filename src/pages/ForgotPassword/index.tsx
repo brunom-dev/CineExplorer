@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { sendPasswordReset } from "../../services/firebase/auth";
 import Logo from "../../assets/logo-cineexplorer-desktop.png";
-import { MailCheckIcon, MailSearchIcon } from "lucide-react";
+import { MailCheckIcon } from "lucide-react";
 
 export function ForgotPasswordPage() {
     const [email, setEmail] = useState("");
