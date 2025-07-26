@@ -69,7 +69,7 @@ export function MyFavoritesPage() {
                             onClick={() =>
                                 setRefresh((prev) => prev + 1)
                             } 
-                            className="text-slate-400 hover:text-sky-500 transition-colors cursor-pointer"
+                            className="text-slate-400 hover:text-sky-500 transition-colors cursor-pointer mr-5 md:mr-0"
                         >
                             <RefreshCw
                                 size={24}

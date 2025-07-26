@@ -17,7 +17,7 @@ export const MediaCard = (item: MediaItemProps) => {
     }
 
     return (
-        <Link to={`/${item.media_type}/${item.id}`}>
+        <Link to={`/${item.media_type}/${item.id}`} data-aos="fade-up">
             <div className="relative group rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer">
 
                 <FavoriteButton mediaItem={mediaItem} absoluteProp={true}/>

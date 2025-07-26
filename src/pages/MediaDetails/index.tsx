@@ -278,7 +278,7 @@ export function MediaDetailsPage() {
             </section>
 
             {credits && credits.cast.length > 0 && (
-                <section className="mt-5 mb-10 px-10">
+                <section className="mt-0 mb-10 px-10" data-aos="fade-up">
                     <h2 className="text-2xl md:text-3xl text-slate-100 font-bold mb-3">
                         Elenco Principal
                     </h2>
@@ -292,7 +292,7 @@ export function MediaDetailsPage() {
             )}
 
             {recommendations && recommendations.length > 0 && (
-                <section className="mt-16 px-10">
+                <section className="mt-16 px-10" data-aos="fade-up">
                     <h2 className="text-2xl md:text-3xl text-slate-100 font-bold mb-6">
                         Você também pode gostar
                     </h2>
