@@ -60,10 +60,6 @@ export const Header = () => {
     }, [isMenuOpen]);
 
     useEffect(() => {
-        console.log(currentUser?.myFavorite)
-    }, [])
-
-    useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
                 profileMenuRef.current &&

@@ -113,7 +113,7 @@ export function MyFavoritesPage() {
                     <div>
                         {viewMode === "grid" ? (
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                                {favoriteItems.map((item) => (
+                                {favoriteItems.map((item: MediaItemProps) => (
                                     <MediaCard key={item.id} {...item} media_type={item.title ? "movie" : "tv"}/>
                                 ))}
                             </div>
