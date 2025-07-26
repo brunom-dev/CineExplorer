@@ -1,6 +1,6 @@
 # CineExplorer 🎬
 
-![Capa do CineExplorer]("./docs/cover.png")
+<img src="docs/cover.png">
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
@@ -50,13 +50,13 @@ Aqui estão algumas telas que demonstram a aplicação em funcionamento.
 
 <p align="center">
   <strong>Home Page e Página de Detalhes</strong><br>
-  <img src="COLOQUE_A_URL_DO_SEU_PRINT_DA_HOME_AQUI" width="80%" alt="Tela da Home Page no Desktop">
-  <img src="COLOQUE_A_URL_DO_SEU_PRINT_DOS_DETALHES_AQUI" width="80%" alt="Tela de Detalhes no Desktop">
+  <img src="docs/homepage.png" width="80%" alt="Tela da Home Page no Desktop">
+  <img src="docs/detailspage.png" width="80%" alt="Tela de Detalhes no Desktop">
 </p>
 <p align="center">
   <strong>Autenticação e Favoritos</strong><br>
-  <img src="COLOQUE_A_URL_DO_SEU_PRINT_DA_PAGINA_DE_LOGIN_AQUI" width="45%" alt="Tela de Login">
-  <img src="COLOQUE_A_URL_DO_SEU_PRINT_DA_LISTA_DE_FAVORITOS_AQUI" width="45%" alt="Tela de Favoritos">
+  <img src="docs/loginpage.png" width="45%" alt="Tela de Login">
+  <img src="docs/favoritepage.png" width="45%" alt="Tela de Favoritos">
 </p>
 
 ---
