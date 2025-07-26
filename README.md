@@ -49,14 +49,23 @@ Este projeto foi construído como um case completo de desenvolvimento front-end 
 Aqui estão algumas telas que demonstram a aplicação em funcionamento.
 
 <p align="center">
-  <strong>Home Page e Página de Detalhes</strong><br>
-  <img src="docs/homepage.png" width="80%" alt="Tela da Home Page no Desktop">
-  <img src="docs/detailspage.png" width="80%" alt="Tela de Detalhes no Desktop">
+  <strong>Home Page</strong><br>
+  <img src="docs/homepage.png" width="70%" alt="Tela da Home Page no Desktop"><br>
 </p>
+
 <p align="center">
-  <strong>Autenticação e Favoritos</strong><br>
-  <img src="docs/loginpage.png" width="45%" alt="Tela de Login">
-  <img src="docs/favoritepage.png" width="45%" alt="Tela de Favoritos">
+  <strong>Página de Detalhes</strong><br>
+  <img src="docs/detailspage.png" width="70%" alt="Tela de Detalhes no Desktop"><br>
+</p>
+
+<p align="center">
+  <strong>Autenticação</strong><br>
+  <img src="docs/loginpage.png" width="70%" alt="Tela de Login"><br>
+</p>
+
+<p align="center">
+  <strong>Favoritos</strong><br>
+  <img src="docs/favoritepage.png" width="70%" alt="Tela de Favoritos">
 </p>
 
 ---
