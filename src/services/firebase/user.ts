@@ -20,7 +20,6 @@ export const registerUserDb = async (
             myFavorite: [],
         });
     } catch (error) {
-        console.error("Erro ao criar documento do usuário:", error);
         throw error;
     }
 };

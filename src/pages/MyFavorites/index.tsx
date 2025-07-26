@@ -6,6 +6,7 @@ import { getMediaDetails } from "../../services/tmdb/tmdb"; // Usaremos nossa fu
 import type { MediaItemProps } from "../../types/Media/MediaItemProps";
 import { ListPlus, LayoutGrid, List, RefreshCw } from "lucide-react";
 import { ListItemCard } from "../../components/ListItemCard";
+import { toast } from "sonner";
 
 export function MyFavoritesPage() {
     const { currentUser } = useAuth();
@@ -39,10 +40,7 @@ export function MyFavoritesPage() {
                         ) as unknown as MediaItemProps[]
                     );
                 } catch (error) {
-                    console.error(
-                        "Erro ao buscar detalhes dos favoritos:",
-                        error
-                    );
+                    toast.error("Erro ao carregar.")
                     setFavoriteItems([]);
                 } finally {
                     setTimeout(() => setLoadingRefresh(false), 500)

@@ -45,7 +45,6 @@ export const FavoriteButton = ({ mediaItem, absoluteProp }: FavoriteButtonProps)
             }
         } catch (error) {
             toast.error("Ocorreu um erro. Tente novamente.");
-            console.error(error);
         }
     };
 

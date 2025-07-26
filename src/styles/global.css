@@ -16,22 +16,20 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;  /* Largura para barras verticais */
-  height: 8px; /* Altura para barras horizontais (nosso caso!) */
+  width: 8px;  
+  height: 8px; 
 }
 
 ::-webkit-scrollbar-track {
-  /* Usando @apply para pegar a cor da nossa paleta Tailwind! */
   @apply bg-slate-800;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-600; /* Cor da alça que você arrasta */
+  @apply bg-slate-600; 
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  /* Muda para nossa cor de destaque ao passar o mouse */
   @apply bg-sky-600;
 }

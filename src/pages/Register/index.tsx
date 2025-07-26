@@ -85,7 +85,6 @@ export function RegisterPage() {
         }
 
         if (!isValid) {
-            console.log("Formulário com erros, não será enviado.");
             return;
         }
 

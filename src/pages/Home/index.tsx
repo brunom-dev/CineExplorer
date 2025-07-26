@@ -13,6 +13,7 @@ import { PlayCircleIcon } from "lucide-react";
 import { MediaCard } from "../../components/MediaCard";
 import { ModalTrailer } from "../../components/ModalTrailer";
 import { SkeletonCard } from "../../components/SkeletonCard";
+import { toast } from "sonner";
 
 export function HomePage() {
     const [movies, setMovies] = useState<MediaItemProps[]>([]);
@@ -33,10 +34,7 @@ export function HomePage() {
                 setMovies(moviesResponse);
                 setSeries(seriesResponse);
             } catch (error) {
-                console.error(
-                    "Erro ao buscar dados para a página inicial:",
-                    error
-                );
+                toast.error("Erro ao carregar.")
             } finally {
                 setIsLoading(false);
             }

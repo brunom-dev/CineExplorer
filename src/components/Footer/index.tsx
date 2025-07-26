@@ -34,7 +34,7 @@ export const Footer = () => {
                             href="https://github.com/brunom-dev"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:bg-[#4586ff] transition-colors rounded-full bg-[#4586ff] md:bg-transparent p-3 transition-all duration-300"
+                            className="hover:bg-[#4586ff] rounded-full bg-[#4586ff] md:bg-transparent p-3 transition-all duration-300"
                         >
                             <GithubIcon size={24} />
                         </a>
@@ -42,7 +42,7 @@ export const Footer = () => {
                             href="https://www.linkedin.com/in/bruno-macedo-dev/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:bg-[#4586ff] transition-colors rounded-full bg-[#4586ff] md:bg-transparent p-3 transition-all duration-300"
+                            className="hover:bg-[#4586ff] rounded-full bg-[#4586ff] md:bg-transparent p-3 transition-all duration-300"
                         >
                             <LinkedinIcon size={24} />
                         </a>
